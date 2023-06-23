@@ -131,6 +131,7 @@ export class SyncNoteLinks {
             
             try {
                 let filePattern: string;
+                let today = new Date();
 
                 // FIXME: scan note foldes of new configurations
                 this.ctrl.config.getNotesFilePattern(date, scope)
@@ -169,43 +170,31 @@ export class SyncNoteLinks {
                                         .filter(fileWithStats => {
                                             let fileDate: Date =  fileWithStats.stats.mtime;
 
-                                            let res =  (fileDate.getDate() === date.getDate()) &&
-                                            (fileDate.getMonth() === date.getMonth()) &&
-                                            (fileDate.getFullYear() === date.getFullYear()); 
+                                            let res = (fileDate.getDate() === today.getDate())
+                                                && (fileDate.getMonth() === today.getMonth())
+                                                && (fileDate.getFullYear() === today.getFullYear()); 
                                             return res; 
-
                                         })
                                         .map(fileWithStats => vscode.Uri.file(fileWithStats.file.toString()));
-                                        
-
-                                        
-
-
 
                                         resolve(result);
                                     } catch (error) {
                                         reject(error);
                                     }
-
                                 });
                             } else {
                                 resolve([]);
                             }
-
                         });
-
-
                     });
 
-                /*
+            /*
             // get base directory of file
             let p: string = doc.uri.fsPath;
     
             // get filename, strip extension, set as notes getFilesInNotesFolder
             p = p.substring(0, p.lastIndexOf("."));
-    
-    */
-
+            */
 
             } catch (error) {
                 if(error instanceof Error) {
